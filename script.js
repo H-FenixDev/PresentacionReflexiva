@@ -378,6 +378,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const playBgBtn = document.getElementById('play-bg-btn');
+
     if (bgAudioUploader && bgAudio) {
         bgAudioUploader.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -387,13 +389,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('.bg-audio-btn').textContent = '[ BG LOADED ]';
                 document.querySelector('.bg-audio-btn').style.color = 'var(--neon-green)';
                 
-                // Play immediately if not on the last slide
-                const activeDot = document.querySelector('.hud-dot.active');
-                const currentIndex = activeDot ? parseInt(activeDot.getAttribute('data-slide')) : 0;
-                if (currentIndex !== 9) {
-                    bgAudio.play().catch(err => console.log('Autoplay blocked:', err));
+                // Show play button, don't autoplay
+                if (playBgBtn) {
+                    playBgBtn.style.display = 'inline-block';
                 }
             }
+        });
+    }
+
+    if (playBgBtn && bgAudio) {
+        playBgBtn.addEventListener('click', () => {
+            if (bgAudio.paused) {
+                const activeDot = document.querySelector('.hud-dot.active');
+                const currentIndex = activeDot ? parseInt(activeDot.getAttribute('data-slide')) : 0;
+                bgAudio.volume = (currentIndex === 9) ? 1.0 : 0.3;
+                bgAudio.play().catch(err => console.log('Play blocked:', err));
+            } else {
+                bgAudio.pause();
+            }
+        });
+
+        bgAudio.addEventListener('play', () => {
+            playBgBtn.textContent = '[ ⏸ PAUSE ]';
+            playBgBtn.style.color = 'var(--neon-pink)';
+        });
+
+        bgAudio.addEventListener('pause', () => {
+            playBgBtn.textContent = '[ ▶ PLAY ]';
+            playBgBtn.style.color = 'var(--neon-cyan)';
         });
     }
 
