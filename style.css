@@ -1,0 +1,1161 @@
+/* ==========================================================================
+   CYBERPUNK PRESENTATION ENGINE - STYLE SYSTEM
+   ========================================================================== */
+
+/* Design Tokens & Theme Variables */
+:root {
+    --bg-dark: #050508;
+    --bg-card: rgba(13, 13, 17, 0.75);
+    --border-cyber: rgba(0, 242, 254, 0.2);
+    --border-cyber-active: rgba(0, 242, 254, 0.8);
+    
+    /* Neon Palette */
+    --neon-cyan: #00f2fe;
+    --neon-pink: #ff007f;
+    --neon-green: #00ff66;
+    --neon-purple: #9b51e0;
+    --neon-gold: #c5a880;
+    
+    /* Typography */
+    --font-header: 'Orbitron', sans-serif;
+    --font-sub: 'Rajdhani', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+}
+
+/* Global Reset & Container */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    background-color: var(--bg-dark);
+    color: #e2e8f0;
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Smooth Snapping Slide Container */
+#presentation-container {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    position: relative;
+    z-index: 10;
+    /* Hide scrollbars */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+#presentation-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* ==========================================================================
+   CYBERPUNK CRT & GLITCH EFFECTS
+   ========================================================================== */
+
+/* CRT scanlines effect */
+#crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 6px 100%;
+    z-index: 999;
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+/* Vignette border shading */
+#vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85) 100%);
+    z-index: 998;
+    pointer-events: none;
+}
+
+/* Neural Network Interactive Canvas */
+#cyber-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.15;
+}
+
+/* ==========================================================================
+   HUD INTERFACES (Heads Up Display)
+   ========================================================================== */
+
+/* Slide Navigation Dots (HUD Right) */
+#hud-navigation {
+    position: fixed;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.hud-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.hud-dot::after {
+    content: attr(title);
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--neon-cyan);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    letter-spacing: 1px;
+}
+
+.hud-dot:hover::after {
+    opacity: 0.8;
+    transform: translateY(-50%) translateX(0);
+}
+
+.hud-dot:hover {
+    background-color: rgba(0, 242, 254, 0.5);
+    box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.hud-dot.active {
+    background-color: var(--neon-cyan);
+    box-shadow: 0 0 12px var(--neon-cyan);
+    border-color: var(--neon-cyan);
+    transform: scale(1.4);
+}
+
+/* Status Bar HUD (Bottom Left) */
+#hud-status {
+    position: fixed;
+    left: 2rem;
+    bottom: 2rem;
+    z-index: 100;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(13, 13, 17, 0.5);
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-cyber);
+    backdrop-filter: blur(5px);
+}
+
+.status-separator {
+    color: var(--neon-pink);
+}
+
+#current-slide-num {
+    color: var(--neon-cyan);
+    font-weight: bold;
+}
+
+#elapsed-time {
+    color: var(--neon-green);
+}
+
+/* Scroll indicator prompt */
+#scroll-prompt {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.7;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.scroll-text {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 5px rgba(0, 242, 254, 0.5);
+}
+
+.scroll-arrow {
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid var(--neon-cyan);
+    border-right: 2px solid var(--neon-cyan);
+    transform: rotate(45deg);
+    animation: bounceScroll 2s infinite;
+}
+
+@keyframes bounceScroll {
+    0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.3; }
+    50% { transform: rotate(45deg) translate(5px, 5px); opacity: 1; }
+}
+
+/* ==========================================================================
+   SLIDE STRUCTURING
+   ========================================================================== */
+
+.slide {
+    height: 100vh;
+    width: 100vw;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 4rem;
+}
+
+/* Core glassmorphic card for slide contents */
+.slide-content {
+    width: 100%;
+    max-width: 1100px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-cyber);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.05);
+    border-radius: 4px;
+    padding: 4rem;
+    position: relative;
+    z-index: 20;
+    backdrop-filter: blur(15px);
+    transition: border-color 0.8s ease, box-shadow 0.8s ease;
+}
+
+.slide.active .slide-content {
+    border-color: rgba(0, 242, 254, 0.4);
+    box-shadow: 0 20px 60px rgba(0, 242, 254, 0.1), 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+/* 2-Column Split Layout */
+.split-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.content-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.content-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Center Aligned Layout */
+.center-align {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+}
+
+/* Slide Info Tags & Header */
+.slide-tag {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    color: var(--neon-pink);
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
+}
+
+.slide-tag.glow-green {
+    color: var(--neon-green);
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+}
+
+.slide-title {
+    font-family: var(--font-header);
+    font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.slide-desc.highlight {
+    font-family: var(--font-sub);
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    font-weight: 500;
+    color: var(--neon-cyan);
+    line-height: 1.4;
+    letter-spacing: 1px;
+    border-left: 3px solid var(--neon-cyan);
+    padding-left: 1.5rem;
+}
+
+.slide-body {
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    line-height: 1.6;
+    color: rgba(226, 232, 240, 0.75);
+}
+
+/* ==========================================================================
+   ANIMATIONS & TRANSITIONS (FLOW)
+   ========================================================================== */
+
+/* Define base hidden state for flow animation */
+.slide .slide-tag,
+.slide .slide-title,
+.slide .slide-desc,
+.slide .slide-body,
+.slide .slide-quote,
+.slide .content-right {
+    opacity: 0;
+    transform: translateY(35px);
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Trigger reveal when active class is present */
+.slide.active .slide-tag {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.15s;
+}
+
+.slide.active .slide-title {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s;
+}
+
+.slide.active .slide-desc {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.45s;
+}
+
+.slide.active .slide-body {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.6s;
+}
+
+.slide.active .slide-quote {
+    opacity: 0.75;
+    transform: translateY(0);
+    transition-delay: 0.68s;
+}
+
+.slide.active .content-right {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.75s;
+}
+
+/* Deep Introspective Slide Quote Style */
+.slide-quote {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--neon-gold);
+    border-left: 2px solid var(--neon-gold);
+    padding-left: 1rem;
+    margin-top: 1rem;
+    font-style: italic;
+    opacity: 0;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   IMAGE FRAME SYSTEM
+   ========================================================================== */
+
+.image-frame {
+    width: 100%;
+    max-width: 380px;
+    height: 380px;
+    border: 1px solid var(--border-cyber);
+    background: rgba(0, 0, 0, 0.6);
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.85) contrast(1.15) saturate(1.1);
+    transition: transform 0.5s ease;
+}
+
+.image-frame:hover img {
+    transform: scale(1.05);
+}
+
+.image-frame::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 20px rgba(0, 242, 254, 0.3);
+    pointer-events: none;
+}
+
+/* Cyber Scanner Animation Overlay */
+.frame-scanner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(0, 242, 254, 0) 10%, rgba(0, 242, 254, 1) 50%, rgba(0, 242, 254, 0) 90%);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    animation: scannerMotion 4s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scannerMotion {
+    0% { top: 0%; }
+    50% { top: 100%; }
+    100% { top: 0%; }
+}
+
+/* ==========================================================================
+   GLITCH ANIMATION SYSTEM (Cover)
+   ========================================================================== */
+
+.glitch-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.main-title {
+    font-family: var(--font-header);
+    font-size: clamp(2.2rem, 6.5vw, 4.8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: #ffffff;
+    position: relative;
+    line-height: 1.1;
+}
+
+.sub-title {
+    font-family: var(--font-header);
+    font-size: clamp(1.2rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--neon-pink);
+    position: relative;
+}
+
+.cyber-badge {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    letter-spacing: 6px;
+    color: var(--neon-cyan);
+    margin-top: 1.5rem;
+    border: 1px solid var(--neon-cyan);
+    padding: 0.8rem 2rem;
+    background: rgba(0, 242, 254, 0.05);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.1), inset 0 0 10px rgba(0, 242, 254, 0.05);
+    text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+    animation: pulseGlow 3s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.2); }
+    100% { box-shadow: 0 0 25px rgba(0, 242, 254, 0.25); border-color: rgba(0, 242, 254, 0.6); }
+}
+
+/* Glitch Shader Style */
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-dark);
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--neon-cyan);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitchAnim 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 var(--neon-pink), 0 2px var(--neon-cyan);
+    clip: rect(85px, 450px, 140px, 0);
+    animation: glitchAnim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitchAnim {
+    0% { clip: rect(15px, 9999px, 66px, 0); }
+    10% { clip: rect(85px, 9999px, 5px, 0); }
+    20% { clip: rect(34px, 9999px, 98px, 0); }
+    30% { clip: rect(8px, 9999px, 33px, 0); }
+    40% { clip: rect(51px, 9999px, 76px, 0); }
+    50% { clip: rect(92px, 9999px, 18px, 0); }
+    60% { clip: rect(4px, 9999px, 57px, 0); }
+    70% { clip: rect(73px, 9999px, 89px, 0); }
+    80% { clip: rect(31px, 9999px, 12px, 0); }
+    90% { clip: rect(62px, 9999px, 45px, 0); }
+    100% { clip: rect(19px, 9999px, 83px, 0); }
+}
+
+@keyframes glitchAnim2 {
+    0% { clip: rect(76px, 9999px, 11px, 0); }
+    10% { clip: rect(22px, 9999px, 94px, 0); }
+    20% { clip: rect(81px, 9999px, 4px, 0); }
+    30% { clip: rect(13px, 9999px, 62px, 0); }
+    40% { clip: rect(67px, 9999px, 31px, 0); }
+    50% { clip: rect(3px, 9999px, 88px, 0); }
+    60% { clip: rect(95px, 9999px, 14px, 0); }
+    70% { clip: rect(48px, 9999px, 73px, 0); }
+    80% { clip: rect(29px, 9999px, 50px, 0); }
+    90% { clip: rect(84px, 9999px, 27px, 0); }
+    100% { clip: rect(59px, 9999px, 92px, 0); }
+}
+
+/* ==========================================================================
+   TERMINAL INTERFACES (Slide 3, 5, 8)
+   ========================================================================== */
+
+.terminal-card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(5, 5, 8, 0.95);
+    border: 1px solid var(--border-cyber);
+    border-radius: 6px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+    font-family: var(--font-mono);
+    overflow: hidden;
+}
+
+.terminal-header {
+    background: rgba(20, 20, 25, 0.9);
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+}
+
+.term-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.term-dot.red { background-color: #ff5f56; }
+.term-dot.yellow { background-color: #ffbd2e; }
+.term-dot.green { background-color: #27c93f; }
+
+.term-title {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    margin-left: 0.5rem;
+}
+
+.terminal-body {
+    padding: 1.5rem;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    font-size: 0.85rem;
+    color: #e2e8f0;
+}
+
+.term-line {
+    opacity: 0.85;
+    word-break: break-all;
+}
+
+.term-line.cmd {
+    color: var(--neon-cyan);
+}
+
+.term-line.warning {
+    color: var(--neon-gold);
+}
+
+.term-line.error {
+    color: var(--neon-pink);
+    animation: flashAlert 2s infinite alternate;
+}
+
+.text-cyan { color: var(--neon-cyan); }
+.text-green { color: var(--neon-green); }
+.text-yellow { color: var(--neon-gold); }
+.text-red { color: var(--neon-pink); }
+
+.term-cursor {
+    animation: blinkCursor 1s step-end infinite;
+    color: var(--neon-cyan);
+    font-weight: bold;
+}
+
+@keyframes blinkCursor {
+    50% { opacity: 0; }
+}
+
+@keyframes flashAlert {
+    0% { text-shadow: 0 0 2px rgba(255, 0, 127, 0); }
+    100% { text-shadow: 0 0 8px rgba(255, 0, 127, 0.4); }
+}
+
+/* Specific terminal configurations for alerts */
+.alert-border {
+    border-color: rgba(255, 0, 127, 0.3);
+}
+
+.terminal-header.red-bg {
+    background: rgba(255, 0, 127, 0.15);
+    border-bottom-color: rgba(255, 0, 127, 0.3);
+}
+
+.font-alert {
+    color: #ffccd5;
+}
+
+/* ==========================================================================
+   MEMORY CELL GRID (Slide 4)
+   ========================================================================== */
+
+.cyber-grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    max-width: 380px;
+}
+
+.grid-cell {
+    background: rgba(13, 13, 17, 0.9);
+    border: 1px solid var(--border-cyber);
+    height: 100px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.grid-cell::before {
+    content: attr(data-text);
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.6rem;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    opacity: 0.5;
+}
+
+.grid-cell:hover,
+.grid-cell.active-glow {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    color: #ffffff;
+}
+
+.grid-cell.corrupt {
+    border-color: rgba(255, 0, 127, 0.3);
+    color: rgba(255, 0, 127, 0.4);
+}
+
+.grid-cell.corrupt:hover,
+.grid-cell.corrupt.active-glow {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+    color: #ffccd5;
+    animation: jitterCell 0.2s infinite;
+}
+
+@keyframes jitterCell {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-1px, 1px); }
+    100% { transform: translate(1px, -1px); }
+}
+
+/* ==========================================================================
+   RESOURCE DRAIN BARS (Slide 7)
+   ========================================================================== */
+
+.resource-drain-visual {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.drain-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.drain-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+}
+
+.drain-bar {
+    width: 100%;
+    height: 14px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.drain-bar .fill {
+    height: 100%;
+    background-color: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drain-bar.cyan .fill { background-color: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+.drain-bar.pink .fill { background-color: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
+.drain-bar.purple .fill { background-color: var(--neon-purple); box-shadow: 0 0 8px var(--neon-purple); }
+
+.drain-bar.green {
+    border-color: rgba(0, 255, 102, 0.2);
+}
+
+.drain-bar.green .fill-animated {
+    height: 100%;
+    background-color: var(--neon-green);
+    box-shadow: 0 0 12px var(--neon-green);
+    animation: barPulse 2s infinite alternate;
+}
+
+@keyframes barPulse {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.alert-glow {
+    animation: redGreenFlash 2.5s infinite;
+}
+
+.grid-cell:hover,
+.grid-cell.active-glow {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    color: #ffffff;
+}
+
+.grid-cell.corrupt {
+    border-color: rgba(255, 0, 127, 0.3);
+    color: rgba(255, 0, 127, 0.4);
+}
+
+.grid-cell.corrupt:hover,
+.grid-cell.corrupt.active-glow {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+    color: #ffccd5;
+    animation: jitterCell 0.2s infinite;
+}
+
+.debate-cards-container {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.debate-card {
+    flex: 1;
+    height: 150px;
+    perspective: 800px;
+    cursor: pointer;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), -webkit-transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.debate-card:hover .card-inner,
+.debate-card.flipped .card-inner {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid var(--border-cyber);
+}
+
+.card-front {
+    background: rgba(13, 13, 17, 0.95);
+    color: var(--neon-cyan);
+}
+
+.card-front:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+}
+
+.card-number {
+    font-family: var(--font-header);
+    font-size: 2.2rem;
+    font-weight: 800;
+    opacity: 0.15;
+    position: absolute;
+    top: 0.5rem;
+    left: 0.8rem;
+}
+
+.card-prompt {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+.card-back {
+    background: rgba(0, 242, 254, 0.05);
+    color: #ffffff;
+    transform: rotateY(180deg);
+    border-color: var(--neon-cyan);
+    box-shadow: inset 0 0 15px rgba(0, 242, 254, 0.1);
+}
+
+.card-back p {
+    font-size: clamp(0.7rem, 1.2vw, 0.82rem);
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   CLOSING SLIDE (Slide 10)
+   ========================================================================== */
+
+.cierre-title {
+    font-family: var(--font-header);
+    font-size: clamp(2rem, 5.5vw, 4rem);
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: #ffffff;
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+}
+
+.cierre-desc {
+    font-family: var(--font-sub);
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 2px;
+}
+
+.big-statement {
+    font-family: var(--font-sub);
+    font-size: clamp(1.2rem, 3vw, 2.2rem);
+    font-weight: 700;
+    max-width: 800px;
+    padding: 1.5rem 3rem;
+    border: 1px solid var(--neon-pink);
+    border-radius: 4px;
+    background: rgba(255, 0, 127, 0.04);
+}
+
+.glow-pink {
+    text-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+    box-shadow: 0 0 25px rgba(255, 0, 127, 0.1), inset 0 0 15px rgba(255, 0, 127, 0.05);
+}
+
+.glow-green {
+    text-shadow: 0 0 15px rgba(0, 255, 102, 0.5);
+}
+
+.cierre-footer {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    color: var(--neon-green);
+    margin-top: 1.5rem;
+    animation: flashGreen 2s infinite alternate;
+}
+
+@keyframes flashGreen {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Adaptive Grid)
+   ========================================================================== */
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Adaptive Grid & Short Viewports)
+   ========================================================================== */
+
+/* Shorter Viewports (Laptops in landscape, e.g., height < 768px) */
+@media (max-height: 750px) {
+    .slide {
+        padding: 1.5rem 3rem;
+    }
+    .slide-content {
+        padding: 1.5rem 2.5rem;
+    }
+    .split-layout {
+        gap: 2rem;
+    }
+    .image-frame {
+        max-width: 250px;
+        height: 250px;
+    }
+    .terminal-card {
+        max-width: 340px;
+    }
+    .terminal-body {
+        min-height: 160px;
+        padding: 1rem;
+        font-size: 0.75rem;
+    }
+    .cyber-grid-container {
+        max-width: 300px;
+    }
+    .grid-cell {
+        height: 70px;
+        font-size: 0.75rem;
+    }
+    .debate-card {
+        height: 130px;
+    }
+    .debate-cards-container {
+        gap: 0.5rem;
+    }
+    .resource-drain-visual {
+        max-width: 300px;
+        gap: 0.8rem;
+    }
+    .cierre-title {
+        margin-bottom: -0.5rem;
+    }
+    .big-statement {
+        padding: 0.8rem 1.5rem;
+    }
+    .cyber-badge {
+        margin-top: 0.5rem;
+        padding: 0.5rem 1.5rem;
+    }
+}
+
+/* Tablet & Mobile Layout (Width < 900px) */
+@media (max-width: 900px) {
+    .slide {
+        padding: 1.5rem 1rem;
+    }
+    .slide-content {
+        padding: 1.5rem 1rem;
+        width: 100%;
+        max-width: 92%;
+    }
+    .split-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .content-left {
+        gap: 0.5rem;
+    }
+    .content-right {
+        margin-top: 0.5rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    #hud-navigation {
+        display: none;
+    }
+    #hud-status {
+        left: 0.5rem;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        font-size: 0.65rem;
+        justify-content: space-between;
+        width: calc(100% - 1rem);
+        padding: 0.3rem 0.6rem;
+    }
+    .image-frame {
+        max-width: 200px;
+        height: 200px;
+    }
+    .terminal-card {
+        max-width: 100%;
+        width: 100%;
+    }
+    .terminal-body {
+        min-height: 120px;
+        padding: 0.8rem;
+        font-size: 0.75rem;
+    }
+    .debate-cards-container {
+        flex-direction: column;
+        gap: 0.4rem;
+        width: 100%;
+    }
+    .debate-card {
+        width: 100%;
+        height: 75px; /* Compact height to fit in viewport */
+    }
+    .card-front, .card-back {
+        padding: 0.5rem;
+    }
+    .card-number {
+        font-size: 1.2rem;
+        top: 0.2rem;
+        left: 0.4rem;
+    }
+    .card-prompt {
+        font-size: 0.8rem;
+    }
+    .card-back p {
+        font-size: 0.7rem;
+        line-height: 1.3;
+    }
+    .cyber-grid-container {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 100%;
+        gap: 0.4rem;
+    }
+    .grid-cell {
+        height: 50px;
+        font-size: 0.7rem;
+    }
+    .grid-cell::before {
+        display: none;
+    }
+    .resource-drain-visual {
+        max-width: 100%;
+        gap: 0.4rem;
+    }
+    .drain-bar-wrapper {
+        gap: 0.2rem;
+    }
+    .drain-bar {
+        height: 8px;
+    }
+}
+
+/* Extra Small Devices (Phones < 480px) and Landscape phones with short height */
+@media (max-width: 480px), (max-height: 550px) {
+    .slide {
+        padding: 1rem 0.5rem;
+    }
+    .slide-content {
+        padding: 1rem;
+        max-width: 95%;
+    }
+    .slide-tag {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+    }
+    .cyber-badge {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        padding: 0.4rem 0.8rem;
+        margin-top: 0.8rem;
+    }
+    .image-frame {
+        max-width: 140px;
+        height: 140px;
+    }
+    .cyber-grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .grid-cell {
+        height: 45px;
+    }
+    .big-statement {
+        font-size: 1rem;
+        padding: 0.6rem 0.8rem;
+    }
+    .cierre-footer {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        margin-top: 0.8rem;
+    }
+}

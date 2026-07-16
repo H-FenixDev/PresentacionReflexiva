@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TU MENTE TE MIENTE | TU TIEMPO SE AGOTA</title>
+    <!-- Google Fonts: Orbitron (Cyberpunk Headings), Rajdhani (Sub-headings), Share Tech Mono (Terminal), Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Cyberpunk CRT Scanline Effect & Glitch Overlay -->
+    <div id="crt-overlay"></div>
+    <div id="vignette"></div>
+
+    <!-- Interactive Background Canvas (Matrix particles / neural network) -->
+    <canvas id="cyber-canvas"></canvas>
+
+    <!-- Slide Navigation HUD (Dots Indicator) -->
+    <div id="hud-navigation">
+        <div class="hud-dot active" data-slide="0" title="Portada"></div>
+        <div class="hud-dot" data-slide="1" title="El Reloj"></div>
+        <div class="hud-dot" data-slide="2" title="El Impostor"></div>
+        <div class="hud-dot" data-slide="3" title="El Pasado"></div>
+        <div class="hud-dot" data-slide="4" title="El Futuro"></div>
+        <div class="hud-dot" data-slide="5" title="La Máscara"></div>
+        <div class="hud-dot" data-slide="6" title="Ciclos Perdidos"></div>
+        <div class="hud-dot" data-slide="7" title="Memento Mori"></div>
+        <div class="hud-dot" data-slide="8" title="Debate"></div>
+        <div class="hud-dot" data-slide="9" title="Cierre"></div>
+    </div>
+
+    <!-- Status Bar HUD -->
+    <div id="hud-status">
+        <span class="status-glitch" data-text="SYSTEM: ACTIVE">SYSTEM: ACTIVE</span>
+        <span class="status-separator">|</span>
+        <span>SLIDE: <span id="current-slide-num">01</span>/10</span>
+        <span class="status-separator">|</span>
+        <span id="elapsed-time">00:00</span>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div id="scroll-prompt">
+        <span class="scroll-text">DESLIZA PARA EMPEZAR EL VIAJE</span>
+        <div class="scroll-arrow"></div>
+    </div>
+
+    <!-- Presentation Slide Wrapper (Scroll Snapping Container) -->
+    <main id="presentation-container">
+
+        <!-- SLIDE 1: PORTADA -->
+        <section class="slide active" id="slide-0" style="background-image: linear-gradient(rgba(5, 5, 8, 0.85), rgba(5, 5, 8, 0.95)), url('assets/cyber_portada.png'); background-size: cover; background-position: center;">
+            <div class="slide-content center-align">
+                <div class="glitch-wrapper">
+                    <h1 class="main-title glitch" data-text="TU MENTE TE MIENTE.">TU MENTE TE MIENTE.</h1>
+                    <h2 class="sub-title glitch" data-text="TU TIEMPO SE AGOTA.">TU TIEMPO SE AGOTA.</h2>
+                </div>
+                <p class="slide-quote mt-2" style="font-size: 1.1rem; max-width: 800px; line-height: 1.6; animation-delay: 0.5s;">
+                    "Somos prisioneros de una realidad que nuestro propio cerebro inventa. Si no la cuestionas, jamás serás libre."
+                </p>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: EL RELOJ -->
+        <section class="slide" id="slide-1">
+            <div class="slide-content split-layout">
+                <div class="content-left">
+                    <div class="slide-tag">SYS.CLOCK.STATUS</div>
+                    <h2 class="slide-title">4.000 SEMANAS Y CHAO.</h2>
+                    <p class="slide-desc highlight">El reloj corre en background. Damas y caballeros, ¿en qué weá están gastando su tiempo?</p>
+                    <p class="slide-body">Si vivimos unos 80 años, ese es nuestro presupuesto total. No hay vidas extras. El tiempo avanza rápido y nosotros andamos en piloto automático, preocupados de puras leseras. ¿De verdad vas a dejar que se te vaya la vida así de simple?</p>
+                    <p class="slide-quote">"No es que tengamos poco tiempo, sino que perdemos mucho." — Séneca</p>
+                </div>
+                <div class="content-right">
+                    <div class="image-frame">
+                        <img src="assets/cyber_reloj.png" alt="Reloj Cyberpunk">
+                        <div class="frame-scanner"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: EL IMPOSTOR -->
+        <section class="slide" id="slide-2">
+            <div class="slide-content split-layout">
+                <div class="content-left">
+                    <div class="slide-tag">PROCESS.MONITOR</div>
+                    <h2 class="slide-title">EL NARRADOR INTRUSO.</h2>
+                    <p class="slide-desc highlight">Esa vocecita en tu cabeza que no se calla nunca... ¿De verdad eres tú o es un impostor pasándose rollos?</p>
+                    <p class="slide-body">¿Por qué le creemos todo a esa voz que nos dice que somos malos para esto, que nos va a ir mal, o que se pasa películas con lo que piensan los demás? Pasamos más tiempo escuchando el comentario del cerebro que viviendo la realidad.</p>
+                    <p class="slide-quote">"Pasamos la vida entera resolviendo problemas que nosotros mismos inventamos." — Proverbio Zen</p>
+                </div>
+                <div class="content-right">
+                    <div class="terminal-card">
+                        <div class="terminal-header">
+                            <span class="term-dot red"></span>
+                            <span class="term-dot yellow"></span>
+                            <span class="term-dot green"></span>
+                            <span class="term-title">cabeza_process.sh</span>
+                        </div>
+                        <div class="terminal-body">
+                            <p class="term-line cmd">> run analisis_rollo.exe</p>
+                            <p class="term-line warning">[WARNING] Memoria de sobrepensar saturada (99.8%)</p>
+                            <p class="term-line">Escaneando pensamientos...</p>
+                            <p class="term-line error">ERROR: Bucle de inseguridad ("La voy a cagar")</p>
+                            <p class="term-line error">ERROR: Rollo innecesario ("¿Qué van a pensar de mí?")</p>
+                            <p class="term-line text-cyan">Recomendación: Mandar el ego a la chucha...</p>
+                            <span class="term-cursor">_</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: EL BUCLE DEL PASADO -->
+        <section class="slide" id="slide-3">
+            <div class="slide-content split-layout">
+                <div class="content-left">
+                    <div class="slide-tag">MEMORY.CORRUPTION</div>
+                    <h2 class="slide-title">RECUERDOS EDITADOS.</h2>
+                    <p class="slide-desc highlight">Tu cerebro te edita el pasado para justificarte los miedos de hoy. Brígido.</p>
+                    <p class="slide-body">No guardamos videos, guardamos cuentos que se modifican con nuestro estado de ánimo actual. ¿Por qué dos amigos recuerdan el mismo carrete de formas tan distintas? ¿Tiene sentido amargarse hoy por una historia que tu mente inventó a su pinta?</p>
+                </div>
+                <div class="content-right">
+                    <div class="visual-placeholder">
+                        <div class="cyber-grid-container">
+                            <div class="grid-cell corrupt" data-text="ERROR">CARRETE_2022</div>
+                            <div class="grid-cell" data-text="MODIFICADO">ROLLO_EX_PAREJA</div>
+                            <div class="grid-cell corrupt" data-text="EXTRACTO">DISCUSION_3_AÑOS_ATRAS</div>
+                            <div class="grid-cell" data-text="CON_FILTRO">HISTORIA_DE_INFANCIA</div>
+                            <div class="grid-cell corrupt" data-text="ALTERADO">ERROR_DE_AEROPUERTO</div>
+                            <div class="grid-cell" data-text="SIMULADO">MEMORIA_BORROSA</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: LA TRAMPA DEL FUTURO -->
+        <section class="slide" id="slide-4">
+            <div class="slide-content split-layout">
+                <div class="content-left">
+                    <div class="slide-tag">SYS.SCHEDULER</div>
+                    <h2 class="slide-title">LA TRAMPA DEL "CUANDO...".</h2>
+                    <p class="slide-desc highlight">"Cuando tenga la tremenda pega, cuando tenga plata, ahí voy a ser feliz"... Tremendo chamullo.</p>
+                    <p class="slide-body">Actuamos como si nos quedaran vidas infinitas. El narrador te convence de posponer la felicidad para un mañana que se corre todos los días. Si no estás presente hoy, ¿cuándo crees que vas a empezar a vivir?</p>
+                    <p class="slide-quote">"El mañana es solo un concepto. El único lugar donde existes es aquí y ahora." — Alan Watts</p>
+                </div>
+                <div class="content-right">
+                    <div class="terminal-card">
+                        <div class="terminal-header">
+                            <span class="term-dot red"></span>
+                            <span class="term-dot yellow"></span>
+                            <span class="term-dot green"></span>
+                            <span class="term-title">esperando_vida.log</span>
+                        </div>
+                        <div class="terminal-body">
+                            <p class="term-line text-green">[PENDIENTE] pasarlo_bien.exe - Estado: PAUSADO</p>
+                            <p class="term-line text-yellow">[CORRIENDO] conseguir_lucas.sh - Bucle: Infinito</p>
+                            <p class="term-line text-yellow">[CORRIENDO] estresarse_por_el_mañana.exe - CPU: 95%</p>
+                            <p class="term-line text-red">[BLOQUEADO] disfrutar_el_ahora.pkg - Requiere: 'tiempo_libre' (NO ENCONTRADO)</p>
+                            <span class="term-cursor">_</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: EL AVATAR DIGITAL -->
+        <section class="slide" id="slide-5">
+            <div class="slide-content split-layout">
+                <div class="content-left">
+                    <div class="slide-tag">AVATAR.SYNTHESIS</div>
+                    <h2 class="slide-title">LA MÁSCARA DIGITAL.</h2>
+                    <p class="slide-desc highlight">Armamos el tremendo perfil en Instagram para ocultar que por dentro tenemos la tremenda ensalada de cables.</p>
+                    <p class="slide-body">¿Quién eres cuando apagas el celular y no hay nadie mirando? ¿Te gusta esa persona o te da miedo quedarte a solas en tu pieza en silencio? Nos obsesionamos tanto con el avatar que terminamos olvidando al usuario.</p>
+                </div>
+                <div class="content-right">
+                    <div class="image-frame">
+                        <img src="assets/cyber_avatar.png" alt="Avatar Digital">
+                        <div class="frame-scanner"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: EL COSTO DEL ERROR -->
+        <section class="slide" id="slide-6">
+            <div class="slide-content split-layout">
+                <div class="content-left">
+                    <div class="slide-tag">SYS.RESOURCE.DRAIN</div>
+                    <h2 class="slide-title">WEÁS QUE NOS QUITAN VIDA.</h2>
+                    <p class="slide-desc highlight">Tacos, mails de la pega, peleas tontas... Si supieras cuánta batería de vida te queda, ¿la gastarías en eso?</p>
+                    <p class="slide-body">Desperdiciamos energía en procesos inútiles. El orgullo de tener la razón en una discusión de WhatsApp, la rabia contra un chofer o el miedo al qué dirán. Son fugas de recursos en un sistema que tiene fecha de expiración.</p>
+                </div>
+                <div class="content-right">
+                    <div class="resource-drain-visual">
+                        <div class="drain-bar-wrapper">
+                            <span class="drain-label">Pasarse rollos / Ansiedad [42%]</span>
+                            <div class="drain-bar cyan"><div class="fill" style="width: 42%;"></div></div>
+                        </div>
+                        <div class="drain-bar-wrapper">
+                            <span class="drain-label">Enojarse por tonteras [35%]</span>
+                            <div class="drain-bar pink"><div class="fill" style="width: 35%;"></div></div>
+                        </div>
+                        <div class="drain-bar-wrapper">
+                            <span class="drain-label">Pegado en el pasado [18%]</span>
+                            <div class="drain-bar purple"><div class="fill" style="width: 18%;"></div></div>
+                        </div>
+                        <div class="drain-bar-wrapper">
+                            <span class="drain-label">PRESENCIA REAL / DISFRUTE [5%]</span>
+                            <div class="drain-bar green alert-glow"><div class="fill-animated" style="width: 5%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: MEMENTO MORI -->
+        <section class="slide" id="slide-7">
+            <div class="slide-content split-layout">
+                <div class="content-left">
+                    <div class="slide-tag">SYS.CORE.CLEANUP</div>
+                    <h2 class="slide-title">EL REBOOT FINAL.</h2>
+                    <p class="slide-desc highlight">Frente a la muerte, todas las trancas y el ego valen hongo. Es la verdad más pura y liberadora.</p>
+                    <p class="slide-body">Saber que nos vamos a morir no es para deprimirse; es el hack supremo. Borra al instante las preocupaciones tontas, el miedo a equivocarse y el orgullo, dejándote libre para lo que de verdad importa.</p>
+                    <p class="slide-quote">"Podrías dejar la vida ahora mismo. Deja que eso determine lo que haces, dices y piensas." — Marco Aurelio</p>
+                </div>
+                <div class="content-right">
+                    <div class="terminal-card alert-border">
+                        <div class="terminal-header red-bg">
+                            <span class="term-dot red"></span>
+                            <span class="term-dot yellow"></span>
+                            <span class="term-dot green"></span>
+                            <span class="term-title">memento_mori.sh</span>
+                        </div>
+                        <div class="terminal-body font-alert">
+                            <p class="term-line">> purge --tonteras</p>
+                            <p class="term-line text-red">ELIMINANDO: Preocupaciones de ego... COMPLETADO</p>
+                            <p class="term-line text-red">ELIMINANDO: Ansiedad social / Miedos... COMPLETADO</p>
+                            <p class="term-line text-red">ELIMINANDO: Rencores tontos... COMPLETADO</p>
+                            <p class="term-line text-green">ESTADO: Claridad recuperada. Valor del presente: MÁXIMO.</p>
+                            <span class="term-cursor">_</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: DEBATE -->
+        <section class="slide" id="slide-8">
+            <div class="slide-content split-layout">
+                <div class="content-left">
+                    <div class="slide-tag">SYS.DEBUG.MODE</div>
+                    <h2 class="slide-title">CONVERSACIÓN BRÍGIDA.</h2>
+                    <p class="slide-desc highlight">Apaga la pantalla un momento. Hablemos al hueso, sin rodeos.</p>
+                    
+                    <div class="debate-cards-container">
+                        <!-- Card 1 -->
+                        <div class="debate-card">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-number">01</div>
+                                    <div class="card-prompt">EL ROLLO</div>
+                                </div>
+                                <div class="card-back">
+                                    <p>¿Cuál es el cuento más grande que te estás vendiendo a ti mismo hoy en día para no hacer lo que realmente quieres?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="debate-card">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-number">02</div>
+                                    <div class="card-prompt">EL CONTEO</div>
+                                </div>
+                                <div class="card-back">
+                                    <p>Si supieras que te quedan exactamente 52 semanas de vida (un año), ¿con quién de esta mesa dejarías de hablar, y a quién le dirías lo que realmente sientes?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="debate-card">
+                            <div class="card-inner">
+                                <div class="card-front">
+                                    <div class="card-number">03</div>
+                                    <div class="card-prompt">LA PÉRDIDA</div>
+                                </div>
+                                <div class="card-back">
+                                    <p>¿Qué es lo más valioso que has perdido por culpa del orgullo o del miedo al qué dirán, y cómo te pesa hoy?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-frame">
+                        <img src="assets/cyber_conexion.png" alt="Conexión Humana">
+                        <div class="frame-scanner"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 10: CIERRE -->
+        <section class="slide" id="slide-9">
+            <div class="slide-content center-align">
+                <div class="slide-tag glow-green">TERMINAL.EXIT</div>
+                 <h1 class="cierre-title">CORTA EL ROLLO.</h1>
+                 <p class="cierre-desc">La mente quiere respuestas. El tiempo solo quiere pasar. Tu vida no es una novela que tienes que escribir; es un destello breve entre dos eternidades oscuras.</p>
+                 <div class="big-statement glow-pink">Damas y caballeros: apaguen el monólogo interno. El milagro no está en lo que vas a lograr, sino en el simple hecho de que estás aquí, respirando, con tus amigos.</div>
+                 <div class="cierre-footer">[ FIN DE LA TRANSMISIÓN. ABRAZA, CONVERSA Y DISFRUTA EL AHORA ]</div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
