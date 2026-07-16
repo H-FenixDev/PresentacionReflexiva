@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.theEndTimeOut = setTimeout(() => {
                     cierreContent.classList.add('fade-out');
                     theEndSequence.classList.add('show');
-                }, 4000); // 4 seconds before the sequence starts
+                }, 10000); // 10 seconds before the sequence starts
             }
         } else {
             if (endAudio) {
