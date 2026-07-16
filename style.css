@@ -191,6 +191,17 @@ html, body {
     color: var(--neon-green);
 }
 
+.audio-btn {
+    cursor: pointer;
+    color: var(--neon-cyan);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.audio-btn:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px #ffffff;
+}
+
 /* Scroll indicator prompt */
 #scroll-prompt {
     position: fixed;

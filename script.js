@@ -307,6 +307,22 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(animate);
     }
 
+    // Custom Audio Uploader Logic
+    const audioUploader = document.getElementById('audio-uploader');
+    const endingAudio = document.getElementById('ending-audio');
+    
+    if (audioUploader && endingAudio) {
+        audioUploader.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const objectUrl = URL.createObjectURL(file);
+                endingAudio.src = objectUrl;
+                document.querySelector('.audio-btn').textContent = '[ TRACK LOADED ]';
+                document.querySelector('.audio-btn').style.color = 'var(--neon-green)';
+            }
+        });
+    }
+
     window.addEventListener('resize', resizeCanvas);
 
     resizeCanvas();
