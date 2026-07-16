@@ -122,11 +122,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Slide 10: Play ending audio and trigger Fade Sequence
         const endAudio = document.getElementById('ending-audio');
+        const bgAudio = document.getElementById('bg-audio');
         const cierreContent = document.getElementById('cierre-content');
         const theEndSequence = document.getElementById('the-end-sequence');
         clearTimeout(window.theEndTimeOut);
 
         if (index === 9) {
+            if (bgAudio) {
+                bgAudio.pause();
+            }
             if (endAudio) {
                 endAudio.play().catch(e => console.log('Audio autoplay blocked', e));
             }
@@ -134,12 +138,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.theEndTimeOut = setTimeout(() => {
                     cierreContent.classList.add('fade-out');
                     theEndSequence.classList.add('show');
-                }, 10000); // 10 seconds before the sequence starts
+                }, 12000); // 12 seconds before the sequence starts
             }
         } else {
             if (endAudio) {
                 endAudio.pause();
                 endAudio.currentTime = 0;
+            }
+            if (bgAudio) {
+                bgAudio.play().catch(e => console.log('Audio autoplay blocked', e));
             }
             if (cierreContent && theEndSequence) {
                 cierreContent.classList.remove('fade-out');
@@ -326,6 +333,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Custom Audio Uploader Logic
     const audioUploader = document.getElementById('audio-uploader');
     const endingAudio = document.getElementById('ending-audio');
+    const bgAudioUploader = document.getElementById('bg-audio-uploader');
+    const bgAudio = document.getElementById('bg-audio');
     
     if (audioUploader && endingAudio) {
         audioUploader.addEventListener('change', (e) => {
@@ -333,8 +342,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (file) {
                 const objectUrl = URL.createObjectURL(file);
                 endingAudio.src = objectUrl;
-                document.querySelector('.audio-btn').textContent = '[ TRACK LOADED ]';
-                document.querySelector('.audio-btn').style.color = 'var(--neon-green)';
+                document.querySelector('.end-audio-btn').textContent = '[ END LOADED ]';
+                document.querySelector('.end-audio-btn').style.color = 'var(--neon-green)';
+            }
+        });
+    }
+
+    if (bgAudioUploader && bgAudio) {
+        bgAudioUploader.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const objectUrl = URL.createObjectURL(file);
+                bgAudio.src = objectUrl;
+                document.querySelector('.bg-audio-btn').textContent = '[ BG LOADED ]';
+                document.querySelector('.bg-audio-btn').style.color = 'var(--neon-green)';
+                
+                // Play immediately if not on the last slide
+                const activeDot = document.querySelector('.hud-dot.active');
+                const currentIndex = activeDot ? parseInt(activeDot.getAttribute('data-slide')) : 0;
+                if (currentIndex !== 9) {
+                    bgAudio.play().catch(err => console.log('Autoplay blocked:', err));
+                }
             }
         });
     }

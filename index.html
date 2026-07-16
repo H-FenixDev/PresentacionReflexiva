@@ -16,7 +16,8 @@
     <div id="crt-overlay"></div>
     <div id="vignette"></div>
 
-    <!-- Background Audio -->
+    <!-- Background Audios -->
+    <audio id="bg-audio" src="assets/bg_music.mp3" loop></audio>
     <audio id="ending-audio" src="assets/cancion.mp3"></audio>
 
     <!-- Interactive Background Canvas (Matrix particles / neural network) -->
@@ -44,7 +45,10 @@
         <span class="status-separator">|</span>
         <span id="elapsed-time">00:00</span>
         <span class="status-separator">|</span>
-        <label for="audio-uploader" class="audio-btn" title="Cargar pista MP3">[ LOAD TRACK ]</label>
+        <label for="bg-audio-uploader" class="audio-btn bg-audio-btn" title="Música de fondo">[ BG TRACK ]</label>
+        <input type="file" id="bg-audio-uploader" accept="audio/*" style="display: none;">
+        <span class="status-separator">|</span>
+        <label for="audio-uploader" class="audio-btn end-audio-btn" title="Música del final">[ END TRACK ]</label>
         <input type="file" id="audio-uploader" accept="audio/*" style="display: none;">
     </div>
 
@@ -61,8 +65,8 @@
         <section class="slide active" id="slide-0" style="background-image: linear-gradient(rgba(5, 5, 8, 0.85), rgba(5, 5, 8, 0.95)), url('assets/cyber_portada.png'); background-size: cover; background-position: center;">
             <div class="slide-content center-align">
                 <div class="glitch-wrapper">
-                    <h1 class="main-title glitch" data-text="TU MENTE TE MIENTE.">TU MENTE TE MIENTE.</h1>
-                    <h2 class="sub-title glitch" data-text="TU TIEMPO SE AGOTA.">TU TIEMPO SE AGOTA.</h2>
+                    <h1 class="main-title glitch" data-text="PRISIONEROS DE LA MENTE.">PRISIONEROS DE LA MENTE.</h1>
+                    <h2 class="sub-title glitch" data-text="ESCLAVOS DEL RELOJ.">ESCLAVOS DEL RELOJ.</h2>
                 </div>
                 <p class="slide-quote mt-2" style="font-size: 1.1rem; max-width: 800px; line-height: 1.6; animation-delay: 0.5s;">
                     "Somos prisioneros de una realidad que nuestro propio cerebro inventa. Si no la cuestionas, jamás serás libre."
