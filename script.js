@@ -16,7 +16,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalSlides = slides.length;
 
     // Logic variables for slide animations
+    window.customEndLoaded = false;
     let flipTimeouts = [];
+
+    function fadeVolume(audio, targetVolume, duration) {
+        if (!audio) return;
+        if (audio.fadeInterval) clearInterval(audio.fadeInterval);
+        
+        const steps = 20;
+        const stepTime = duration / steps;
+        const volumeStep = (targetVolume - audio.volume) / steps;
+        
+        audio.fadeInterval = setInterval(() => {
+            let newVolume = audio.volume + volumeStep;
+            if (newVolume > 1) newVolume = 1;
+            if (newVolume < 0) newVolume = 0;
+            audio.volume = newVolume;
+            
+            if (Math.abs(audio.volume - targetVolume) < 0.02) {
+                audio.volume = targetVolume;
+                clearInterval(audio.fadeInterval);
+            }
+        }, stepTime);
+    }
     let gridInterval = null;
     let gridStep = 0;
     const circularOrder = [0, 1, 3, 5, 4, 2];
@@ -128,11 +150,13 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(window.theEndTimeOut);
 
         if (index === 9) {
-            if (bgAudio) {
-                bgAudio.pause();
-            }
-            if (endAudio) {
-                endAudio.play().catch(e => console.log('Audio autoplay blocked', e));
+            if (window.customEndLoaded) {
+                if (bgAudio) bgAudio.pause();
+                if (endAudio) endAudio.play().catch(e => console.log('Audio autoplay blocked', e));
+            } else {
+                if (bgAudio) {
+                    fadeVolume(bgAudio, 1.0, 2000); // fade up to 100% over 2s
+                }
             }
             if (cierreContent && theEndSequence) {
                 window.theEndTimeOut = setTimeout(() => {
@@ -141,11 +165,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 12000); // 12 seconds before the sequence starts
             }
         } else {
-            if (endAudio) {
+            if (window.customEndLoaded && endAudio) {
                 endAudio.pause();
                 endAudio.currentTime = 0;
             }
             if (bgAudio) {
+                if (bgAudio.volume > 0.4) {
+                    fadeVolume(bgAudio, 0.3, 1000);
+                } else {
+                    bgAudio.volume = 0.3;
+                }
                 bgAudio.play().catch(e => console.log('Audio autoplay blocked', e));
             }
             if (cierreContent && theEndSequence) {
@@ -340,6 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
         audioUploader.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
+                window.customEndLoaded = true;
                 const objectUrl = URL.createObjectURL(file);
                 endingAudio.src = objectUrl;
                 document.querySelector('.end-audio-btn').textContent = '[ END LOADED ]';
