@@ -119,6 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
             // Reset cards state when navigating away
             debateCards.forEach(card => card.classList.remove('flipped'));
         }
+
+        // Slide 10: Play ending audio (Cierre)
+        const endAudio = document.getElementById('ending-audio');
+        if (endAudio) {
+            if (index === 9) {
+                endAudio.play().catch(e => console.log('Audio autoplay blocked', e));
+            } else {
+                endAudio.pause();
+                endAudio.currentTime = 0;
+            }
+        }
     }
 
     /* ==========================================================================
