@@ -1171,3 +1171,67 @@ html, body {
         margin-top: 0.8rem;
     }
 }
+
+/* ==========================================================================
+   THE END SEQUENCE (Slide 10)
+   ========================================================================== */
+#cierre-content {
+    transition: opacity 6s ease-in-out, filter 6s ease-in-out;
+}
+
+#cierre-content.fade-out {
+    opacity: 0;
+    filter: blur(20px);
+}
+
+#the-end-sequence {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+    padding: 2rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 4s ease-in-out;
+    z-index: 10;
+}
+
+#the-end-sequence.show {
+    opacity: 1;
+    animation: fadeInEnd 4s ease-out forwards;
+}
+
+@keyframes fadeInEnd {
+    0% { transform: translate(-50%, -40%); filter: blur(10px); }
+    100% { transform: translate(-50%, -50%); filter: blur(0); }
+}
+
+.the-end-title {
+    font-family: var(--font-header);
+    font-size: clamp(3rem, 8vw, 7rem);
+    color: #ffffff;
+    letter-spacing: 15px;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 10px var(--neon-cyan);
+    margin-bottom: 2rem;
+    font-weight: 900;
+}
+
+.interstellar-quote {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    color: var(--neon-cyan);
+    letter-spacing: 2px;
+    line-height: 1.6;
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+    margin-bottom: 1rem;
+}
+
+.interstellar-author {
+    font-family: var(--font-body);
+    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 3px;
+}

@@ -120,14 +120,30 @@ document.addEventListener('DOMContentLoaded', () => {
             debateCards.forEach(card => card.classList.remove('flipped'));
         }
 
-        // Slide 10: Play ending audio (Cierre)
+        // Slide 10: Play ending audio and trigger Fade Sequence
         const endAudio = document.getElementById('ending-audio');
-        if (endAudio) {
-            if (index === 9) {
+        const cierreContent = document.getElementById('cierre-content');
+        const theEndSequence = document.getElementById('the-end-sequence');
+        clearTimeout(window.theEndTimeOut);
+
+        if (index === 9) {
+            if (endAudio) {
                 endAudio.play().catch(e => console.log('Audio autoplay blocked', e));
-            } else {
+            }
+            if (cierreContent && theEndSequence) {
+                window.theEndTimeOut = setTimeout(() => {
+                    cierreContent.classList.add('fade-out');
+                    theEndSequence.classList.add('show');
+                }, 4000); // 4 seconds before the sequence starts
+            }
+        } else {
+            if (endAudio) {
                 endAudio.pause();
                 endAudio.currentTime = 0;
+            }
+            if (cierreContent && theEndSequence) {
+                cierreContent.classList.remove('fade-out');
+                theEndSequence.classList.remove('show');
             }
         }
     }
